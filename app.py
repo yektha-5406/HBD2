@@ -1,93 +1,40 @@
-from flask import Flask, request
+import streamlit as st
 
-app = Flask(__name__)
+# Page config
+st.set_page_config(page_title="Birthday Wishes 🎂", page_icon="🎉")
 
-@app.route('/')
-def home():
-    return '''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Birthday Wishes 🎂</title>
-        <style>
-            body {
-                text-align: center;
-                font-family: Arial;
-                background: linear-gradient(to right, pink, purple);
-                color: white;
-            }
-            .container {
-                margin-top: 100px;
-            }
-            input {
-                padding: 10px;
-                font-size: 16px;
-            }
-            button {
-                padding: 10px 20px;
-                background-color: yellow;
-                border: none;
-                cursor: pointer;
-            }
-            h1 {
-                font-size: 40px;
-            }
-        </style>
-    </head>
-    <body>
+# Custom CSS (like your Flask styling)
+st.markdown("""
+    <style>
+    body {
+        background: linear-gradient(to right, pink, purple);
+    }
+    .title {
+        text-align: center;
+        color: white;
+        font-size: 40px;
+    }
+    .wish {
+        text-align: center;
+        color: white;
+        font-size: 35px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-    <div class="container">
-        <h1>🎉 Birthday Wishes App 🎉</h1>
+# App Title
+st.markdown('<h1 class="title">🎉 Birthday Wishes App 🎉</h1>', unsafe_allow_html=True)
 
-        <form method="POST" action="/wish">
-            <input type="text" name="name" placeholder="Enter your friend's name" required>
-            <br><br>
-            <button type="submit">Send Wish</button>
-        </form>
-    </div>
+# Input
+name = st.text_input("Enter your friend's name")
 
-    </body>
-    </html>
-    '''
-
-@app.route('/wish', methods=['POST'])
-def wish():
-    name = request.form.get('name')
-
-    return f'''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Wish</title>
-        <style>
-            body {{
-                text-align: center;
-                font-family: Arial;
-                background: linear-gradient(to right, orange, red);
-                color: white;
-            }}
-            h1 {{
-                margin-top: 100px;
-                font-size: 40px;
-            }}
-            a {{
-                color: yellow;
-                text-decoration: none;
-                font-size: 20px;
-            }}
-        </style>
-    </head>
-    <body>
-
-        <h1>🎂 Happy Birthday {name}! 🎉</h1>
-        <p>Wishing you lots of happiness and success! 💖</p>
-
-        <br><br>
-        <a href="/">🔙 Go Back</a>
-
-    </body>
-    </html>
-    '''
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# Button
+if st.button("Send Wish 🎂"):
+    if name:
+        st.markdown(
+            f'<h1 class="wish">🎂 Happy Birthday {name}! 🎉</h1>',
+            unsafe_allow_html=True
+        )
+        st.write("💖 Wishing you lots of happiness and success!")
+    else:
+        st.warning("Please enter a name!")
